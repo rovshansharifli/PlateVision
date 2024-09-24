@@ -4,7 +4,8 @@ from det.vehicle_detection import VehicleDetection
 # from rec.plate_recognition import PlateRecognition
 from rec.plate_recognition_rule_based import PlateRecognition
 
-VIDEO_PATH = 'videos/test_slow.mp4'
+VIDEO_PATH = 'videos/test_1.mp4'
+# VIDEO_PATH = 'videos/test_slow.mp4'
 # VIDEO_PATH = 'videos/test_fast.mp4'
 # VIDEO_PATH = 'rtsp://localhost:8556/stream'
 # VIDEO_PATH = '0'

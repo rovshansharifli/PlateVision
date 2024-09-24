@@ -47,10 +47,10 @@ class PlateRecognition():
         if (vehicle_image.shape[0] < self.resize_min_veh_size) or (vehicle_image.shape[1] < self.resize_min_veh_size):
             if vehicle_image.shape[1] > vehicle_image.shape[0]:
                 ratio = self.resize_min_veh_size / vehicle_image.shape[0]
-                new_size = [self.resize_min_veh_size, vehicle_image.shape[0]*ratio]
-            else:
-                ratio = self.resize_min_veh_size / vehicle_image.shape[1]
                 new_size = [vehicle_image.shape[1]*ratio, self.resize_min_veh_size]
+            elif vehicle_image.shape[0] > vehicle_image.shape[1]:
+                ratio = self.resize_min_veh_size / vehicle_image.shape[1]
+                new_size = [self.resize_min_veh_size, vehicle_image.shape[0]*ratio]
 
         if len(new_size) != 0:
             vehicle_image = cv2.resize(vehicle_image, list(map(int, new_size)))
@@ -143,7 +143,7 @@ class PlateRecognition():
                 track_id = queue_object[0]
                 crop = queue_object[1]
                 n_frame = queue_object[2]
-                
+
                 if not self.tracked_vehicles.check_if_exists(track_id):
                     self.tracked_vehicles.add_tracked_vehicle(track_id, crop, n_frame)
 
