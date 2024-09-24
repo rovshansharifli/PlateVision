@@ -1,1 +1,4 @@
 opencv-python
+ultralytics
+lapx
+openvino
