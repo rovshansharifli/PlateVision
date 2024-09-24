@@ -3,6 +3,7 @@ import time
 import string
 import numpy as np
 from .camera import Camera
+from multiprocessing import Queue
 
 from ultralytics.engine.results import Results
 from ultralytics.utils.plotting import save_one_box
@@ -10,15 +11,17 @@ from ultralytics.utils.plotting import save_one_box
 from .tracker import Tracker
 
 class VehicleDetection():
-    def __init__(self, cam_stream: Camera, model_path: string = '',
-                 resize: int = 2, visualize: bool = False, 
-                 verbose: bool = False, device: string = 'CPU', img_size: int = 640):
+    def __init__(self, cam_stream: Camera, shared_queue: Queue, 
+                 model_path: string = '', resize: int = 2, 
+                 visualize: bool = False, verbose: bool = False, 
+                 device: string = 'CPU', img_size: int = 640):
         
         self.resize = resize
         self.device = device
         self.verbose = verbose
         self.visualize = visualize
         self.cam_stream = cam_stream
+        self.shared_queue = shared_queue
         self.frame_limit = cam_stream.get_FPS_of_camera()
 
         # Initializing the Tracker
@@ -58,19 +61,19 @@ class VehicleDetection():
                                     self.crop_dict[track_id] = {0: frame_no, 1: width_square, 2: border_touch, 3: crop, 4: self.crop_dict[track_id][4]}
                         else:
                             self.crop_dict[track_id] = {0: frame_no, 1: width_square, 2: border_touch, 3: crop, 4: time.time()}
-            if track_id != -1:
-                self.crop_dict[track_id] = {0: frame_no, 1: self.crop_dict[track_id][1], 2: self.crop_dict[track_id][2], 3: self.crop_dict[track_id][3], 4: self.crop_dict[track_id][4]}
-        
         removed_keys = []
         for key in self.crop_dict.keys():
-            # Adding to recognition when the frame object is went of the frame or after 5 seconds stayed on frame
-            if (self.crop_dict[key][0] < (frame_no-self.frame_limit)) or ((time.time() - self.crop_dict[key][4]) > 5.0):
-                # Add to a queue for recognition
+            # Adding to recognition when the frame object is went of the frame
+            if self.crop_dict[key][0] < (frame_no-self.frame_limit):
+                self.shared_queue.put({ 0: key,
+                                        1: self.crop_dict[key][3],
+                                        2: self.crop_dict[key][0],
+                                        })
                 removed_keys.append(key)
         for k in removed_keys:
             del self.crop_dict[k]
 
-    def run_engine(self, ):
+    def run_engine(self, ) -> None:
         frame_no = 0
         frame_counter = 0
         full_time = 0
