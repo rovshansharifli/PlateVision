@@ -153,8 +153,9 @@ class PlateRecognition():
                         self.tracked_vehicles.set_plate_by_id(track_id, plate_text)
                         self.results.update(id=track_id, text=plate_text)
                         print(plate_text)
-                            
-                        cv2.imwrite(f'{self.save_path}/{track_id}_{n_frame}_predicted_{plate_text}.png', self.tracked_vehicles.get_crop_by_id(track_id))
+
+                        img_rgb = cv2.cvtColor(self.tracked_vehicles.get_crop_by_id(track_id), cv2.COLOR_BGR2RGB)
+                        cv2.imwrite(f'{self.save_path}/{track_id}_{n_frame}_predicted_{plate_text}.png', img_rgb)
 
                     self.tracked_vehicles.remove_expired_tracked_vehicles(n_frame)
                 

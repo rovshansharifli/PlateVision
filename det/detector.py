@@ -9,7 +9,13 @@ from .ops_faster import *
 from ultralytics.engine.results import Results
 
 class YOLOv8Detector:
-    def __init__(self, model_path: string, cls_names: dict, threshold: int, img_size: int, device: string) -> None:
+    def __init__(self, 
+                 model_path: string,
+                 cls_names: dict = {0: 'Person', 1: 'LP', 2: 'Car', 3: 'Motorcycle', 4: 'Truck', 5: 'Bus'}, 
+                 threshold: int = 0.5, 
+                 img_size: int = 640, 
+                 device: string = 'CPU'
+                 ) -> None:
         self.cls_names = cls_names
         self.conf_thres = threshold
         self.img_size = img_size

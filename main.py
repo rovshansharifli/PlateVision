@@ -5,16 +5,14 @@ from det.vehicle_detection import VehicleDetection
 from rec.plate_recognition_rule_based import PlateRecognition
 
 VIDEO_PATH = 'videos/test_1.mp4'
-# VIDEO_PATH = 'videos/test_slow.mp4'
-# VIDEO_PATH = 'videos/test_fast.mp4'
 # VIDEO_PATH = 'rtsp://localhost:8556/stream'
 # VIDEO_PATH = '0'
+SAVE_PATH = 'videos/results'
 
 VID_STRIDE = 1 # 3
 VISUALIZATION = True
 VISUALIZATION_RESIZE = 2
 VEH_DET_MODEL_PATH = 'models/veh_det/best_pruned75_int8_openvino'
-SAVE_PATH = 'videos/results'
 DEVICE = 'CPU'
 
 def run_detection_engine(queue: Queue):

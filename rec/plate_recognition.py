@@ -1,3 +1,4 @@
+import os
 import cv2
 import time
 import string
@@ -11,6 +12,10 @@ class PlateRecognition():
         self.ocr = PaddleOcrRead()
         self.counter = 0
         self.save_crop = save_crop
+        
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
+
         self.save_path = save_path
         self.shared_queue = shared_queue
         self.results = Results()
