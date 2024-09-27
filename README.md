@@ -4,7 +4,7 @@
 
 The project is targeting to detect vehicles and read the license plate. The project works best on Azerbaijani license plates and it has reach to 98% accuracy on a highway video with fast moving vehicles (unfortunately the test video is not open to public so I cannot share it, but you can test out your own video).
 
-The project is open-source and mainly intended for educational purposes.
+The project is open-source and mainly intended for educational purposes. To make the project available for more people the code is currently only works on CPU (considering the people who might not be able to afford a GPU).
 
 The code is **not** on its best version, so you might come up with bugs and/or unwanted results. Please open an issue if that is the case.
 
